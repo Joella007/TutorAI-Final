@@ -1,25 +1,21 @@
 <?php
 
 return [
-    /*
-    |--------------------------------------------------------------------------
-    | Cross-Origin Resource Sharing (CORS) Configuration
-    |--------------------------------------------------------------------------
-    */
+    'paths' => ['api/*', 'sanctum/csrf-cookie', '*'],
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie', '*'], // On autorise toutes les routes API
+    'allowed_methods' => ['*'],
 
-    'allowed_methods' => ['*'], // On autorise GET, POST, PUT, DELETE...
-
-    'allowed_origins' => ['*'], // 👈 L'ÉTOILE MAGIQUE : Autorise Vercel, Localhost, et n'importe quel appareil !
+    // 👈 ICI, on met l'adresse EXACTE de votre frontend (sans / à la fin)
+    'allowed_origins' => ['https://tutor-ai-final.vercel.app', 'http://localhost:8080'],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'], // On autorise tous les headers
+    'allowed_headers' => ['*'],
 
     'exposed_headers' => [],
 
     'max_age' => 0,
 
-    'supports_credentials' => false, // 👈 DOIT ÊTRE À FALSE pour que l'étoile (*) fonctionne
+    // 👈 ICI, on remet à TRUE car votre système d'authentification en a besoin !
+    'supports_credentials' => true, 
 ];
