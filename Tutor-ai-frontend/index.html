@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TutorAI - Votre Tuteur IA Personnel</title>
+    <meta name="description" content="Maîtrisez n'importe quelle matière avec un tutorat IA personnalisé. Obtenez des explications instantanées, entraînez-vous avec des quiz adaptatifs et suivez vos progrès en temps réel." />
+    <meta name="author" content="TutorAI" />
+
+    <meta property="og:title" content="TutorAI - Votre Tuteur IA Personnel" />
+    <meta property="og:description" content="Maîtrisez n'importe quelle matière avec un tutorat IA personnalisé. Obtenez des explications instantanées, entraînez-vous avec des quiz adaptatifs et suivez vos progrès." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@TutorAI" />
+    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <!-- Apply theme immediately to prevent flash of unstyled content -->
+    <script>
+      (function() {
+        const theme = localStorage.getItem('theme') || 
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        const root = document.documentElement;
+        root.classList.remove('light', 'dark');
+        if (theme === 'dark') {
+          root.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
