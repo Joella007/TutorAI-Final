@@ -256,7 +256,7 @@ export function DashboardLayout() {
                   <div className="h-8 w-8 rounded-full bg-muted overflow-hidden flex items-center justify-center border border-border shrink-0 shadow-sm">
                     {(user as any)?.avatar_url ? (
                       <img
-                        src={`http://localhost:8000${(user as any).avatar_url}`}
+                        src={(user as any).avatar_url}
                         alt="Avatar"
                         className="h-full w-full object-cover"
                       />
