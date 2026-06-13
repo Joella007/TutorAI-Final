@@ -1,32 +1,25 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Cross-Origin Resource Sharing (CORS) Configuration
     |--------------------------------------------------------------------------
-    |
-    | Here you may configure CORS settings for your application. This will
-    | be used by the HandleCors middleware to process requests.
-    |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie', '*'], // On autorise toutes les routes API
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => ['*'], // On autorise GET, POST, PUT, DELETE...
 
-    // 'allowed_origins' => ['http://localhost:8080', 'http://127.0.0.1:8000'], // <--- j'autorise uniquement mon frontend
-    'allowed_origins' => ['http://localhost:8080', 'https://tutor-ai-final.vercel.app'],
+    'allowed_origins' => ['*'], // 👈 L'ÉTOILE MAGIQUE : Autorise Vercel, Localhost, et n'importe quel appareil !
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+    'allowed_headers' => ['*'], // On autorise tous les headers
 
     'exposed_headers' => [],
 
     'max_age' => 0,
 
-    'supports_credentials' => true,
-
+    'supports_credentials' => false, // 👈 DOIT ÊTRE À FALSE pour que l'étoile (*) fonctionne
 ];
