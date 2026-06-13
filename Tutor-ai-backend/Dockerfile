@@ -1,6 +1,5 @@
 FROM php:8.2-cli
 
-# Ajout de libpq-dev pour PostgreSQL + pgsql extensions
 RUN apt-get update && apt-get install -y \
     libzip-dev \
     libpq-dev \
@@ -13,10 +12,9 @@ WORKDIR /app
 
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+# Supprimer le .env local — Laravel utilisera les variables Render
+RUN rm -f .env
 
-# Génère APP_KEY si elle n'existe pas
-RUN cp .env.example .env || true
-RUN php artisan key:generate --force || true
+RUN composer install --no-dev --optimize-autoloader
 
 CMD php artisan serve --host=0.0.0.0 --port=$PORT
