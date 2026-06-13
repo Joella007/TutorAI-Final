@@ -17,7 +17,7 @@ return [
     'allowed_methods' => ['*'],
 
     // 'allowed_origins' => ['http://localhost:8080', 'http://127.0.0.1:8000'], // <--- j'autorise uniquement mon frontend
-    'allowed_origins' => ['http://localhost:8080'],
+    'allowed_origins' => ['http://localhost:8080', 'https://tutor-ai-final.vercel.app'],
 
     'allowed_origins_patterns' => [],
 
