@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Auth\Notifications\ResetPasswordNotification;
+use Illuminate\Auth\Notifications\ResetPassword; // 👈 LA CORRECTION EST ICI
 
 /**
  * Modèle User unifié — pointe sur la table `utilisateur` de Supabase.
@@ -29,41 +29,34 @@ class User extends Authenticatable
         'date_creation',
         'id_role',
         'id_niveau',
-        'id_filiere', //nouveau
-        'avatar_url', // ✅ ajouté
-        
+        'id_filiere',
+        'avatar_url',
     ];
 
     protected $hidden = [
         'mot_de_passe',
     ];
 
-    /**
-     * Laravel utilise 'password' par défaut — on redirige vers 'mot_de_passe'.
-     */
-    // public function getAuthPassword(): string
-    // {
-    //     return $this->mot_de_passe;
-    // }
-    // new
     public function getAuthPasswordName(): string
     {
         return 'mot_de_passe';
     }
+
     public function getEmailForPasswordReset(): string
     {
         return $this->email;
     }
-        public function sendPasswordResetNotification($token): void
+
+    public function sendPasswordResetNotification($token): void
     {
-        // On récupère l'adresse de votre Vercel (ou on la met en dur par sécurité pour la soutenance)
         $frontendUrl = 'https://tutor-ai-final.vercel.app';
 
-        ResetPasswordNotification::createUrlUsing(function ($notifiable, $token) use ($frontendUrl) {
+        ResetPassword::createUrlUsing(function ($notifiable, $token) use ($frontendUrl) {
             return $frontendUrl . '/reset-password?token=' . $token . '&email=' . urlencode($notifiable->email);
         });
 
-        $this->notify(new ResetPasswordNotification($token));
+        // 👈 ET ICI
+        $this->notify(new ResetPassword($token)); 
     }
     
     // ─── Relations ────────────────────────────────────────────────────────────
@@ -117,7 +110,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(JournalSysteme::class, 'id_utilisateur', 'id_utilisateur');
     }
-        public function filiere()
+
+    public function filiere()
     {
         return $this->belongsTo(Filiere::class, 'id_filiere', 'id_filiere');
     }
