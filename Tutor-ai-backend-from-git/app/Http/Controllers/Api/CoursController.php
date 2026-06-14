@@ -26,23 +26,14 @@ class CoursController extends Controller
 
         // 1. Filtrer STRICTEMENT par Filière (Classe)
         if ($request->filled('id_filiere') && $request->input('id_filiere') !== 'Toutes') {
-            $query->where(function($q) use ($request) {
-                // Vérifier dans le chapitre lié
-                $q->whereHas('chapitre', function ($sq) use ($request) {
-                    $sq->where('id_filiere', $request->input('id_filiere'));
-                })
-                // Ou vérifier directement sur la colonne "niveau" du cours pour les données manuelles
-                ->orWhere('niveau', (string) $request->input('id_niveau'));
+            $query->whereHas('chapitre', function ($q) use ($request) {
+                $q->where('id_filiere', $request->input('id_filiere'));
             });
         } 
         // 2. Sinon, filtrer par Niveau (Pour le collège par exemple)
         elseif ($request->filled('id_niveau')) {
-            $query->where(function($q) use ($request) {
-                $q->whereHas('chapitre.filiere', function ($sq) use ($request) {
-                    $sq->where('id_niveau', $request->input('id_niveau'));
-                })
-                // FIX IMPORTANT : On cherche aussi dans la colonne "niveau" textuelle
-                ->orWhere('niveau', (string) $request->input('id_niveau'));
+            $query->whereHas('chapitre.filiere', function ($q) use ($request) {
+                $q->where('id_niveau', $request->input('id_niveau'));
             });
         }
 
@@ -108,20 +99,14 @@ class CoursController extends Controller
             'chapitre.filiere',
         ])->whereNotIn('id_cours', $coursInscrits);
 
-        // Recommande UNIQUEMENT les cours de la filière de l'étudiant !
+        // 👈 LE FIX EST ICI : On recommande UNIQUEMENT les cours de la filière de l'étudiant !
         if ($user->id_filiere) {
-            $query->where(function($q) use ($user) {
-                $q->whereHas('chapitre', function ($sq) use ($user) {
-                    $sq->where('id_filiere', $user->id_filiere);
-                })
-                ->orWhere('niveau', (string) $user->id_niveau);
+            $query->whereHas('chapitre', function ($q) use ($user) {
+                $q->where('id_filiere', $user->id_filiere);
             });
         } elseif ($user->id_niveau) {
-            $query->where(function($q) use ($user) {
-                $q->whereHas('chapitre.filiere', function ($sq) use ($user) {
-                    $sq->where('id_niveau', $user->id_niveau);
-                })
-                ->orWhere('niveau', (string) $user->id_niveau);
+            $query->whereHas('chapitre.filiere', function ($q) use ($user) {
+                $q->where('id_niveau', $user->id_niveau);
             });
         }
 
