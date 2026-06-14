@@ -15,17 +15,20 @@ import { Niveau, Cycle } from '@/types/niveau.types';
 import { maskEmail, isEmailValid, maskPrenom, maskNom } from '@/utils/inputMasks';
 import api from '@/api/axios';
 
+// ── Types ─────────────────────────────────────────────────────────────────────
 interface Filiere {
   id_filiere: number;
   nom_filiere: string;
 }
 
+// ── Icônes par niveau ────────────────────────────────────────────────────────
 const levelIcons: { [key: string]: string } = {
   'Collège':             '📚',
   'Lycée':               '🎓',
   'Université':          '🏛️',
 };
 
+// ── Validation mot de passe ───────────────────────────────────────────────────
 const passwordRules = [
   { label: 'Au moins 8 caractères',      test: (p: string) => p.length >= 8 },
   { label: 'Une lettre majuscule',        test: (p: string) => /[A-Z]/.test(p) },
@@ -355,9 +358,9 @@ export default function RegisterPage() {
               )}
             </AnimatePresence>
 
-            {/* Filières (Classes) — Ne s'affiche QUE s'il y a des filières pour ce niveau ! */}
+            {/* Filières (Classes) */}
             <AnimatePresence>
-              {formData.educationLevel && (
+              {formData.educationLevel && (isLoadingFilieres || filieres.length > 0) && (
                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="space-y-3 overflow-hidden pt-2">
                   <Label className="flex items-center gap-2">
                     <Users className="h-4 w-4" />
@@ -394,9 +397,9 @@ export default function RegisterPage() {
               <Checkbox id="terms" checked={formData.acceptTerms} onCheckedChange={(checked: boolean) => updateFormData('acceptTerms', checked)} className="mt-0.5" />
               <Label htmlFor="terms" className="text-sm text-muted-foreground leading-snug cursor-pointer">
                 J'accepte les{' '}
-                <Link to="/terms" target="_blank" className="text-primary font-medium hover:underline">Conditions d'utilisation</Link>
+                <a href="/terms" target="_blank" className="text-primary font-medium hover:underline">Conditions d'utilisation</a>
                 {' '}et la{' '}
-                <Link to="/privacy" target="_blank" className="text-primary font-medium hover:underline">Politique de confidentialité</Link>
+                <a href="/privacy" target="_blank" className="text-primary font-medium hover:underline">Politique de confidentialité</a>
               </Label>
             </div>
           </motion.div>

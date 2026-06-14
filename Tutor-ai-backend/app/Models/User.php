@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Auth\Notifications\ResetPasswordNotification;
 
 /**
  * Modèle User unifié — pointe sur la table `utilisateur` de Supabase.
@@ -54,15 +54,16 @@ class User extends Authenticatable
     {
         return $this->email;
     }
-    public function sendPasswordResetNotification($token): void
+        public function sendPasswordResetNotification($token): void
     {
-        ResetPassword::createUrlUsing(function ($notifiable, $token) {
-            return env('FRONTEND_URL', 'https://tutor-ai-final.vercel.app') . '/reset-password'
-                . '?token=' . $token
-                . '&email=' . urlencode($notifiable->email);
+        // On récupère l'adresse de votre Vercel (ou on la met en dur par sécurité pour la soutenance)
+        $frontendUrl = 'https://tutor-ai-final.vercel.app';
+
+        ResetPasswordNotification::createUrlUsing(function ($notifiable, $token) use ($frontendUrl) {
+            return $frontendUrl . '/reset-password?token=' . $token . '&email=' . urlencode($notifiable->email);
         });
 
-        $this->notify(new ResetPassword($token));
+        $this->notify(new ResetPasswordNotification($token));
     }
     
     // ─── Relations ────────────────────────────────────────────────────────────

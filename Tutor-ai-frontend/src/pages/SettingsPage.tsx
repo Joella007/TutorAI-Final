@@ -120,11 +120,21 @@ export default function SettingsPage() {
     setAvatarPreview(URL.createObjectURL(file)); 
   };
 
-  const getAvatarSrc = () => {
+    const getAvatarSrc = () => {
     if (avatarPreview) return avatarPreview;
+    
     const url = (user as any)?.avatar_url;
-    if (url) return url.startsWith('http') ? url : `http://localhost:8000${url}`;
-    if (user?.prenom) return `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.prenom}`;
+    
+    if (url) {
+      if (url.startsWith('http')) return url;
+      // Magie : on utilise l'URL de l'API de Vercel en enlevant le "/api/v1" à la fin !
+      const backendUrl = import.meta.env.VITE_API_URL.replace('/api/v1', '');
+      return `${backendUrl}${url}`;
+    }
+    
+    if (user?.prenom) {
+      return `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.prenom}`;
+    }
     return null;
   };
 
